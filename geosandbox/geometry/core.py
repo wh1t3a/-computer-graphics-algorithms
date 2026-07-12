@@ -93,3 +93,34 @@ def segments_intersect(a: Point, b: Point, c: Point, d: Point) -> bool:
         return True
 
     return on_segment(a, b, c) or on_segment(a, b, d) or on_segment(c, d, a) or on_segment(c, d, b)
+
+# ============================================================================
+# Выпуклая оболочка (Graham Scan)
+# ============================================================================
+
+def convex_hull(points: list[Point]) -> list[Point]:
+    """
+    Построение выпуклой оболочки методом Грэхема (Graham scan).
+
+    Сложность: O(n log n)
+    """
+    unique = sorted(set(points))
+    if len(unique) <= 2:
+        return unique
+
+    pivot = min(unique, key=lambda p: (p[1], p[0]))
+
+    def polar_key(point: Point) -> tuple[float, float]:
+        angle = math.atan2(point[1] - pivot[1], point[0] - pivot[0])
+        dist = (point[0] - pivot[0]) ** 2 + (point[1] - pivot[1]) ** 2
+        return (angle, dist)
+
+    ordered = [pivot] + sorted((point for point in unique if point != pivot), key=polar_key)
+
+    hull: list[Point] = []
+    for point in ordered:
+        while len(hull) >= 2 and cross(hull[-2], hull[-1], point) <= 0:
+            hull.pop()
+        hull.append(point)
+
+    return hull
