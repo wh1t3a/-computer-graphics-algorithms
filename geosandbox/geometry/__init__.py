@@ -8,6 +8,7 @@ from .core import (
     polygon_area,
     point_in_polygon,
     segments_intersect,
+    convex_hull,
 )
 
 __all__ = [
@@ -18,4 +19,5 @@ __all__ = [
     "polygon_area",
     "point_in_polygon",
     "segments_intersect",
+    "convex_hull",
 ]
