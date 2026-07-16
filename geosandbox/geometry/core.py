@@ -1,4 +1,4 @@
-﻿"""
+"""
 Библиотека геометрических алгоритмов для 2D и 3D данных.
 Содержит базовые алгоритмы вычислительной геометрии:
 - Проверка принадлежности точки полигону (ray casting)
@@ -36,7 +36,7 @@ class Edge:
 def cross(a: Point, b: Point, c: Point) -> float:
     """
     Векторное произведение (2D cross product).
-
+    
     Возвращает ориентацию точки C относительно вектора AB:
     > 0 - C слева (CCW)
     < 0 - C справа (CW)
@@ -94,6 +94,7 @@ def segments_intersect(a: Point, b: Point, c: Point, d: Point) -> bool:
 
     return on_segment(a, b, c) or on_segment(a, b, d) or on_segment(c, d, a) or on_segment(c, d, b)
 
+
 # ============================================================================
 # Выпуклая оболочка (Graham Scan)
 # ============================================================================
@@ -101,7 +102,7 @@ def segments_intersect(a: Point, b: Point, c: Point, d: Point) -> bool:
 def convex_hull(points: list[Point]) -> list[Point]:
     """
     Построение выпуклой оболочки методом Грэхема (Graham scan).
-
+    
     Сложность: O(n log n)
     """
     unique = sorted(set(points))
@@ -124,3 +125,85 @@ def convex_hull(points: list[Point]) -> list[Point]:
         hull.append(point)
 
     return hull
+
+
+# ============================================================================
+# Триангуляция Делоне
+# ============================================================================
+
+def circumcircle_contains(a: Point, b: Point, c: Point, p: Point) -> bool:
+    """Проверка, лежит ли точка p внутри описанной окружности треугольника abc."""
+    ax, ay = a[0] - p[0], a[1] - p[1]
+    bx, by = b[0] - p[0], b[1] - p[1]
+    cx, cy = c[0] - p[0], c[1] - p[1]
+
+    det = (
+            (ax * ax + ay * ay) * (bx * cy - cx * by)
+            - (bx * bx + by * by) * (ax * cy - cx * ay)
+            + (cx * cx + cy * cy) * (ax * by - bx * ay)
+    )
+
+    orientation = cross(a, b, c)
+    return det > 1e-9 if orientation > 0 else det < -1e-9
+
+
+def delaunay(points: list[Point]) -> list[Triangle]:
+    """
+    Алгоритм триангуляции Делоне (инкрементальный).
+    
+    Сложность: O(n²) простая реализация, O(n log n) с оптимизациями
+    """
+    if len(points) < 3:
+        return []
+
+    min_x = min(p[0] for p in points)
+    max_x = max(p[0] for p in points)
+    min_y = min(p[1] for p in points)
+    max_y = max(p[1] for p in points)
+    delta = max(max_x - min_x, max_y - min_y)
+    mid_x = (min_x + max_x) * 0.5
+    mid_y = (min_y + max_y) * 0.5
+
+    work_points = points[:]
+    super_a = (mid_x - 20 * delta, mid_y - delta)
+    super_b = (mid_x, mid_y + 20 * delta)
+    super_c = (mid_x + 20 * delta, mid_y - delta)
+    super_indices = (len(work_points), len(work_points) + 1, len(work_points) + 2)
+    work_points.extend([super_a, super_b, super_c])
+
+    triangles: list[Triangle] = [super_indices]
+
+    for new_point_idx in range(len(points)):
+        new_point = points[new_point_idx]
+        bad_triangles: list[Triangle] = []
+
+        for tri in triangles:
+            a_idx, b_idx, c_idx = tri
+            a, b, c = work_points[a_idx], work_points[b_idx], work_points[c_idx]
+            
+            if circumcircle_contains(a, b, c, new_point):
+                bad_triangles.append(tri)
+
+        if not bad_triangles:
+            continue
+
+        polygon_edges: dict[Edge, int] = {}
+
+        for tri in bad_triangles:
+            a_idx, b_idx, c_idx = tri
+            for edge in [Edge(a_idx, b_idx), Edge(b_idx, c_idx), Edge(c_idx, a_idx)]:
+                normalized = edge.normalized()
+                polygon_edges[normalized] = polygon_edges.get(normalized, 0) + 1
+
+        boundary_edges = [edge for edge, count in polygon_edges.items() if count == 1]
+
+        for tri in bad_triangles:
+            triangles.remove(tri)
+
+        for edge in boundary_edges:
+            triangles.append((edge.a, edge.b, new_point_idx + len(points) - len(points)))
+
+    return [
+        tri for tri in triangles
+        if all(idx < len(points) for idx in tri)
+    ]

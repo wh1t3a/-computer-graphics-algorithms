@@ -1,4 +1,4 @@
-﻿"""Computational Geometry Module"""
+"""Computational Geometry Module"""
 
 from .core import (
     Point,
@@ -9,6 +9,8 @@ from .core import (
     point_in_polygon,
     segments_intersect,
     convex_hull,
+    delaunay,
+    circumcircle_contains,
 )
 
 __all__ = [
@@ -20,4 +22,6 @@ __all__ = [
     "point_in_polygon",
     "segments_intersect",
     "convex_hull",
+    "delaunay",
+    "circumcircle_contains",
 ]
