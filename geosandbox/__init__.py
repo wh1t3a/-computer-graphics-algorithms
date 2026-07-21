@@ -9,5 +9,6 @@ __author__ = "Computer Graphics Course"
 __license__ = "MIT"
 
 from . import geometry
+from . import curves
 
-__all__ = ["geometry"]
+__all__ = ["geometry", "curves"]
