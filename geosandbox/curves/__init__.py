@@ -1,4 +1,4 @@
-﻿"""Curve Algorithms Module"""
+"""Curve Algorithms Module"""
 
 from .bezier import (
     ControlPoint,
@@ -14,6 +14,10 @@ from .bspline import (
     catmull_rom,
 )
 
+from .nurbs import (
+    nurbs_curve,
+)
+
 __all__ = [
     "ControlPoint",
     "lerp_point",
@@ -23,4 +27,5 @@ __all__ = [
     "basis",
     "bspline",
     "catmull_rom",
+    "nurbs_curve",
 ]
