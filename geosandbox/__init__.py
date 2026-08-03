@@ -1,4 +1,4 @@
-﻿"""
+"""
 Computational Geometry Sandbox - Interactive Algorithms Library
 
 A comprehensive Python library for computational geometry algorithms,
@@ -10,5 +10,6 @@ __license__ = "MIT"
 
 from . import geometry
 from . import curves
+from . import physics
 
-__all__ = ["geometry", "curves"]
+__all__ = ["geometry", "curves", "physics"]
