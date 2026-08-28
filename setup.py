@@ -8,7 +8,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="geosandbox",
-    version="1.0.1",
+    version="1.0.2",
     author="Computer Graphics Course",
     description="Interactive sandbox for computational geometry algorithms",
     long_description=long_description,

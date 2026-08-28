@@ -22,6 +22,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install pytest pytest-cov
+
+        # Install the package itself so `geosandbox` is importable by pytest
+        pip install -e .
     
     - name: Run tests
       run: |
