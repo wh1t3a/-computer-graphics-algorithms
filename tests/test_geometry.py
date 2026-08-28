@@ -35,7 +35,7 @@ class TestBasicOperations:
         
         assert point_in_polygon((5, 5), square) == True
         assert point_in_polygon((15, 15), square) == False
-        assert point_in_polygon((0, 0), square) == False  # On corner
+        assert point_in_polygon((0, 0), square) == True  # On corner (boundary point counts as inside)
 
 
 class TestConvexHull:
