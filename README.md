@@ -451,47 +451,7 @@ Ray Casting (1000-гонник):          ~0.3 ms
 
 ---
 
-## 🌐 Веб-интерфейс (опционально)
 
-Для интерактивной визуализации алгоритмов рекомендуется использовать:
-
-- **React + Canvas**: https://github.com/wh1t3a/geosandbox-web
-- **D3.js**: Для интерактивной триангуляции
-- **Three.js**: Для 3D триангуляции и частиц
-
-**Планируется**: Flask API + React фронтенд с real-time визуализацией
-
----
-
-## 🤝 Вклад
-
-Приветствуем pull requests! 
-
-Области для улучшения:
-- [ ] Оптимизация Delaunay до O(n log n)
-- [ ] Weighted Delaunay (для приоритизации точек)
-- [ ] Voronoi диаграммы
-- [ ] Точные арифметические предикаты (для больших координат)
-- [ ] GPU-ускорение (CuPy)
-- [ ] Статические типы (полное типирование)
-
----
-
-## 📚 Дополнительные ресурсы
-
-### Книги
-- **"Computational Geometry: Algorithms and Applications"** - de Berg, Cheong, van Kreveld, Overmars
-- **"Real-Time Rendering"** - Akenine-Möller, Haines, Hoffman (кривые и частицы)
-
-### Статьи
-- Graham Scan: O. Aichholzer, "Computational Geometry with Visualization"
-- Delaunay: Guibas & Stolfi, "Primitives for the Manipulation of General Subdivisions..."
-
-### Онлайн
-- https://www.csie.ntu.edu.tw/~cjlin/courses/cg/ (видеолекции)
-- https://computational-geometry.github.io/ (практика)
-
----
 
 ## 📝 Лицензия
 
